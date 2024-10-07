@@ -5,22 +5,22 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("meta is correct", async ({ page }) => {
-  await expect(page).toHaveTitle("Eric Minassian");
+  await expect(page).toHaveTitle("Anthony Marinov");
 });
 
 test("main heading is correct", async ({ page }) => {
   const mainHeadingSelector = "h1";
   await expect(page.locator(mainHeadingSelector)).toHaveText(
-    "hey, i'm eric 👋"
+    "hey, i'm anthony 😃"
   );
 });
 
 test("should have correct external links", async ({ page }) => {
   const links = [
-    { href: "https://linkedin.com/in/minassian-eric", text: "linkedin" },
-    { href: "/Eric_Minassian_resume.pdf", text: "resume" },
-    { href: "https://github.com/eric-minassian", text: "github" },
-    { href: "mailto:eric@ericminassian.com", text: "email" },
+    { href: "https://linkedin.com/in/anthony-marinov", text: "linkedin" },
+    { href: "/resume.v2.1-anthony-marinov.pdf", text: "resume" },
+    { href: "https://github.com/anthonymarinov", text: "github" },
+    { href: "mailto:anthonymmarinov@gmail.com", text: "email" },
   ];
 
   for (const link of links) {
@@ -31,13 +31,11 @@ test("should have correct external links", async ({ page }) => {
 
 test("should render Badge components correctly", async ({ page }) => {
   const badges = [
-    { href: "https://amazon.com", text: "Amazon" },
+    { href: "https://ucsd.edu/", text: "University of California, San Diego" },
     {
-      href: "https://www.aboutamazon.com/what-we-do/devices-services/project-kuiper",
-      text: "Project Kuiper",
+      href: "https://www.mitek-us.com/",
+      text: "MiTek",
     },
-    { href: "https://tech.walmart.com", text: "Walmart Global Tech" },
-    { href: "https://uci.edu", text: "University of California, Irvine" },
   ];
 
   for (const badge of badges) {
