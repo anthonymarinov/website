@@ -1,0 +1,62 @@
+---
+import UCSDLogo from "../assets/UCSD.astro";
+import MiTekLogo from "../assets/MiTek.astro";
+import Badge from "../components/Badge.astro";
+import ExternalLink from "../components/ExternalLink.astro";
+import Layout from "../layouts/Layout.astro";
+
+const externalLinks = [
+  {
+    href: "https://linkedin.com/in/anthony-marinov",
+    text: "linkedin",
+  },
+  {
+    href: "/resume.v2.1-anthony-marinov.pdf",
+    text: "resume",
+  },
+  {
+    href: "https://github.com/anthonymarinov",
+    text: "github",
+  },
+  {
+    href: "mailto:anthonymmarinov@gmail.com",
+    text: "email",
+  },
+];
+---
+
+<Layout>
+  <main class="flex-auto min-w-0 mt-6 flex flex-col px-2 md:px-0">
+    <h1 class="mb-8 text-2xl font-medium tracking-tighter">hey, i'm anthony 😃</h1>
+    <p class="prose prose-neutral dark:prose-invert">
+      I'm currently studying Structural Engineering (and some Computer Science) at 
+
+      <Badge href="https://ucsd.edu">
+        <UCSDLogo />
+        <span class="no-prose"> University of California, San Diego </span>
+      </Badge>
+
+      , where I am finishing my BS degree and have begun my MS degree (BS/MS program). Previously, I worked at 
+      
+      <Badge href="https://www.mitek-us.com/">
+
+        <span class="no-prose"> MiTek </span>
+      </Badge>
+      
+       as a Structural R&D Engineer Intern.
+
+    </p>
+
+    <ul
+      class="font-sm mt-8 flex flex-col space-x-0 space-y-2 text-neutral-600 md:flex-row md:space-x-4 md:space-y-0 dark:text-neutral-300"
+    >
+      {
+        externalLinks.map(({ href, text }) => (
+          <li>
+            <ExternalLink href={href}>{text}</ExternalLink>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>
