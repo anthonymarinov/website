@@ -31,11 +31,13 @@ test("should have correct external links", async ({ page }) => {
 
 test("should render Badge components correctly", async ({ page }) => {
   const badges = [
-    { href: "https://ucsd.edu/", text: "University of California, San Diego" },
+    { href: "https://ucsd.edu", text: "University of California, San Diego" },
     {
-      href: "https://www.mitek-us.com/",
+      href: "https://www.mitek-us.com",
       text: "MiTek",
     },
+    { href: "https://tech.walmart.com", text: "Walmart Global Tech" },
+    { href: "https://uci.edu", text: "University of California, Irvine" },
   ];
 
   for (const badge of badges) {
