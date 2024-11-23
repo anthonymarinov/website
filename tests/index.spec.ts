@@ -20,6 +20,7 @@ test("should have correct external links", async ({ page }) => {
     { href: "https://linkedin.com/in/anthony-marinov", text: "linkedin" },
     { href: "/resume.v2.2-anthony-marinov.pdf", text: "resume" },
     { href: "https://github.com/anthonymarinov", text: "github" },
+    { href: "/portfolio-anthony-marinov.pdf", text: "portfolio" },
     { href: "mailto:anthonymmarinov@gmail.com", text: "email" },
   ];
 
