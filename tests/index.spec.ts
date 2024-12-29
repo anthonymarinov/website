@@ -18,7 +18,7 @@ test("main heading is correct", async ({ page }) => {
 test("should have correct external links", async ({ page }) => {
   const links = [
     { href: "https://linkedin.com/in/anthony-marinov", text: "linkedin" },
-    { href: "/resume.v2.2-anthony-marinov.pdf", text: "resume" },
+    { href: "/resume.v3.1-anthony-marinov.pdf", text: "resume" },
     { href: "https://github.com/anthonymarinov", text: "github" },
     { href: "/portfolio-anthony-marinov.pdf", text: "portfolio" },
     { href: "mailto:anthonymmarinov@gmail.com", text: "email" },
