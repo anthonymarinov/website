@@ -34,6 +34,7 @@ test("should render Badge components correctly", async ({ page }) => {
   const badges = [
     { href: "https://ucsd.edu", text: "University of California, San Diego" },
     { href: "https://www.mitek-us.com", text: ""},
+    { href: "https://www.amazon.com/", text: "Amazon" },
   ];
 
   for (const badge of badges) {
