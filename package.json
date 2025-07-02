@@ -16,7 +16,7 @@
     "@playwright/test": "^1.53.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.11",
-    "@types/node": "^24.0.1",
+    "@types/node": "^24.0.10",
     "astro": "^5.9.3",
     "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
