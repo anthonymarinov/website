@@ -15,7 +15,7 @@
     "@astrojs/sitemap": "^3.4.2",
     "@playwright/test": "^1.54.1",
     "@tailwindcss/typography": "^0.5.16",
-    "@tailwindcss/vite": "^4.1.11",
+    "@tailwindcss/vite": "^4.1.12",
     "@types/node": "^24.1.0",
     "astro": "^5.11.0",
     "tailwindcss": "^4.1.11",
