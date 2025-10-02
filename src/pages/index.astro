@@ -3,6 +3,7 @@ import "../styles/globals.css"
 import UCSDLogo from "../assets/UCSD.astro";
 import MiTekLogo from "../assets/MiTek.astro";
 import AmazonLogo from "../assets/Amazon.astro";
+import ShapeLogo from "../assets/Shape.astro";
 import Badge from "../components/Badge.astro";
 import ExternalLink from "../components/ExternalLink.astro";
 import Layout from "../layouts/Layout.astro";
@@ -14,7 +15,7 @@ const externalLinks = [
         text: "linkedin",
     },
     {
-        href: "/resume.v3.1-anthony-marinov.pdf",
+        href: "/resume.pdf",
         text: "resume",
     },
     {
@@ -37,12 +38,21 @@ const externalLinks = [
         <h1 class="mb-8 text-2xl font-medium tracking-tighter">hey, i'm anthony 😃</h1>
         <p class="prose prose-neutral dark:prose-invert">
 
-        I'm currently working on finishing my master's degree in Structural Engineering with a focus in Computer Science at
+        I'm finishing my master's degree in Structural Engineering with a focus in Computer Science at
 
         <Badge href="https://ucsd.edu">
             <UCSDLogo />
             <span class="no-prose"> University of California, San Diego </span>
         </Badge>.
+
+        I am currently working as a Graduate Student Researcher on
+
+        <Badge href="https://shape.ucsd.edu">
+            <ShapeLogo />
+            <span class="no-prose"> SHAPE </span>
+        </Badge>,
+
+        where I am developing high-performance computing to allow the design of new impact-resistant metamaterials.
 
         Previously, I worked as a Software Development Engineer at
 

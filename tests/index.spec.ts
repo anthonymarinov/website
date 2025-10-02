@@ -18,7 +18,7 @@ test("main heading is correct", async ({ page }) => {
 test("should have correct external links", async ({ page }) => {
   const links = [
     { href: "https://linkedin.com/in/anthony-marinov", text: "linkedin" },
-    { href: "/resume.v3.1-anthony-marinov.pdf", text: "resume" },
+    { href: "/resume.pdf", text: "resume" },
     { href: "https://github.com/anthonymarinov", text: "github" },
     { href: "/portfolio-anthony-marinov.pdf", text: "portfolio" },
     { href: "mailto:anthonymmarinov@gmail.com", text: "email" },
@@ -35,6 +35,7 @@ test("should render Badge components correctly", async ({ page }) => {
     { href: "https://ucsd.edu", text: "University of California, San Diego" },
     { href: "https://www.mitek-us.com", text: ""},
     { href: "https://www.amazon.com/", text: "Amazon" },
+    { href: "https://shape.ucsd.edu", text: "SHAPE" },
   ];
 
   for (const badge of badges) {
