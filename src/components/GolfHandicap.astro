@@ -1,0 +1,318 @@
+---
+type Point = { date: string; handicap: number };
+
+const {
+  data,
+  title = "Golf Handicap",
+  subtitle = "",
+  height = 340,
+} = Astro.props as {
+  data: Point[];
+  title?: string;
+  subtitle?: string;
+  height?: number;
+};
+
+const safeData = Array.isArray(data) ? data.slice(-10) : [];
+const values = safeData.map((d) => d.handicap);
+
+const width = 760;
+const padding = { top: 34, right: 18, bottom: 56, left: 56 };
+const plotW = width - padding.left - padding.right;
+const plotH = height - padding.top - padding.bottom;
+
+const rawMin = values.length ? Math.min(...values) : 0;
+const rawMax = values.length ? Math.max(...values) : 1;
+const range = Math.max(0.001, rawMax - rawMin);
+const yMin = rawMin - range * 0.10;
+const yMax = rawMax + range * 0.10;
+
+const clamp = (n: number, a: number, b: number) => Math.max(a, Math.min(b, n));
+
+const xAt = (i: number) => {
+  const n = Math.max(1, safeData.length - 1);
+  return padding.left + (i / n) * plotW;
+};
+
+const yAt = (v: number) => {
+  const t = (v - yMin) / (yMax - yMin);
+  return padding.top + plotH - clamp(t, 0, 1) * plotH;
+};
+
+const labels = safeData.map(({ date }) =>
+  new Date(`${date}T00:00:00Z`).toLocaleDateString(undefined, { month: "short", year: "2-digit" })
+);
+
+const points = safeData.map((d, i) => [xAt(i), yAt(d.handicap)] as const);
+const pathD =
+  points.length > 0
+    ? `M ${points[0][0].toFixed(2)} ${points[0][1].toFixed(2)} ` +
+      points
+        .slice(1)
+        .map(([x, y]) => `L ${x.toFixed(2)} ${y.toFixed(2)}`)
+        .join(" ")
+    : "";
+
+const tickCount = 4;
+const ticks = Array.from({ length: tickCount + 1 }, (_, i) => {
+  const t = i / tickCount;
+  const v = yMin + t * (yMax - yMin);
+  return { value: v, y: yAt(v) };
+});
+
+const maxXLabels = 7;
+const step = Math.max(1, Math.ceil(labels.length / maxXLabels));
+const xLabelIdx = labels.map((_, i) => i).filter((i) => i % step === 0 || i === labels.length - 1);
+
+const currentHandicap = safeData.at(-1)?.handicap ?? null;
+const bestHandicap = values.length ? Math.min(...values) : null;
+---
+
+<section class="mt-16 px-4 py-8 rounded-[20px] border border-white/10 bg-gradient-to-br from-[#1e4d2b] to-[#185c2a] text-white/92 shadow-[0_10px_28px_rgba(0,0,0,0.25)] md:px-8">
+  <div class="flex flex-col md:flex-row md:gap-60">
+    <!-- Left: title + animation -->
+    <div class="flex flex-col md:w-72 flex-shrink-0 mb-6 md:mb-0">
+      <h2 class="text-2xl font-semibold tracking-tighter mb-6 md:mb-8">{title}</h2>
+      {subtitle && <p class="mt-1.5 text-[0.95rem] text-white/72 mb-6 md:mb-8">{subtitle}</p>}
+      
+      <!-- Mobile: Animation + Metrics side by side -->
+      <div class="flex items-start gap-6 md:hidden">
+        <!-- Animation -->
+        <div class="flex items-center justify-center flex-shrink-0">
+          <svg
+            class="w-24 h-24"
+            viewBox="0 0 120 120"
+            role="img"
+            aria-label="Golf ball animation"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <defs>
+              <radialGradient id="ballGradientMobile">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="70%" stop-color="#f5f5f5" />
+                <stop offset="100%" stop-color="#e0e0e0" />
+              </radialGradient>
+            </defs>
+
+            <!-- Golf ball -->
+            <g class="golf-ball">
+              <circle cx="60" cy="60" r="28" fill="url(#ballGradientMobile)" />
+              
+              <!-- Dimples pattern -->
+              <circle cx="50" cy="50" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="70" cy="50" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="60" cy="70" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="50" cy="70" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="70" cy="70" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="60" cy="50" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="45" cy="60" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="75" cy="60" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="55" cy="58" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="65" cy="58" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="55" cy="64" r="2.5" fill="rgba(0,0,0,0.08)" />
+              <circle cx="65" cy="64" r="2.5" fill="rgba(0,0,0,0.08)" />
+            </g>
+
+            <!-- Tee -->
+            <path d="M58 88 L62 88 L61 96 L59 96 Z" fill="rgba(255,255,255,0.6)" class="tee" />
+            
+            <!-- Shadow -->
+            <ellipse cx="60" cy="96" rx="20" ry="4" fill="rgba(0,0,0,0.15)" class="shadow" />
+          </svg>
+        </div>
+
+        <!-- Metrics (visible on mobile) -->
+        <div class="flex flex-col gap-2">
+          <span class="text-sm text-white/72 font-medium">Handicap</span>
+          <div class="flex gap-2">
+            {bestHandicap !== null && (
+              <div class="inline-grid gap-0.5 px-2 py-1.5 rounded-xl border border-white/14 bg-black/18 text-right min-w-16" aria-label="Best handicap">
+                <span class="text-xs text-white/72">Best</span>
+                <span class="text-lg tabular-nums">{bestHandicap.toFixed(1)}</span>
+              </div>
+            )}
+            {currentHandicap !== null && (
+              <div class="inline-grid gap-0.5 px-2 py-1.5 rounded-xl border border-white/14 bg-black/18 text-right min-w-16" aria-label="Current handicap">
+                <span class="text-xs text-white/72">Current</span>
+                <span class="text-lg tabular-nums">{currentHandicap.toFixed(1)}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop: Animation centered -->
+      <div class="hidden md:flex items-center justify-center h-full">
+        <svg
+          class="w-32 h-32"
+          viewBox="0 0 120 120"
+          role="img"
+          aria-label="Golf ball animation"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <radialGradient id="ballGradientDesktop">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="70%" stop-color="#f5f5f5" />
+              <stop offset="100%" stop-color="#e0e0e0" />
+            </radialGradient>
+          </defs>
+
+          <!-- Golf ball -->
+          <g class="golf-ball">
+            <circle cx="60" cy="60" r="28" fill="url(#ballGradientDesktop)" />
+            
+            <!-- Dimples pattern -->
+            <circle cx="50" cy="50" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="70" cy="50" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="60" cy="70" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="50" cy="70" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="70" cy="70" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="60" cy="50" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="45" cy="60" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="75" cy="60" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="55" cy="58" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="65" cy="58" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="55" cy="64" r="2.5" fill="rgba(0,0,0,0.08)" />
+            <circle cx="65" cy="64" r="2.5" fill="rgba(0,0,0,0.08)" />
+          </g>
+
+          <!-- Tee -->
+          <path d="M58 88 L62 88 L61 96 L59 96 Z" fill="rgba(255,255,255,0.6)" class="tee" />
+          
+          <!-- Shadow -->
+          <ellipse cx="60" cy="96" rx="20" ry="4" fill="rgba(0,0,0,0.15)" class="shadow" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- Right: index + chart -->
+    <div class="flex-1">
+      <!-- Metrics (visible on desktop) -->
+      <header class="mb-4 hidden md:flex justify-end items-center gap-3">
+        <span class="text-md text-white/72 font-medium">Handicap</span>
+        {bestHandicap !== null && (
+          <div class="inline-grid gap-0.5 px-2 py-1.5 rounded-xl border border-white/14 bg-black/18 text-right min-w-16" aria-label="Best handicap">
+            <span class="text-xs text-white/72">Best</span>
+            <span class="text-lg tabular-nums">{bestHandicap.toFixed(1)}</span>
+          </div>
+        )}
+        {currentHandicap !== null && (
+          <div class="inline-grid gap-0.5 px-2 py-1.5 rounded-xl border border-white/14 bg-black/18 text-right min-w-16" aria-label="Current handicap">
+            <span class="text-xs text-white/72">Current</span>
+            <span class="text-lg tabular-nums">{currentHandicap.toFixed(1)}</span>
+          </div>
+        )}
+      </header>
+
+      <div class="w-full overflow-x-auto md:overflow-x-visible max-w-full">
+        <svg
+          class="w-full h-auto block min-w-0"
+          viewBox={`0 0 ${width} ${height}`}
+          role="img"
+          aria-label="Line chart of golf handicap over time"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <rect
+            x={padding.left}
+            y={padding.top}
+            width={plotW}
+            height={plotH}
+            rx="16"
+            class="plot-bg"
+          />
+
+          {ticks.map((t) => (
+            <>
+              <line
+                x1={padding.left}
+                y1={t.y}
+                x2={padding.left + plotW}
+                y2={t.y}
+                class="grid-line"
+              />
+              <text x={padding.left - 10} y={t.y + 4} text-anchor="end" class="axis-label">
+                {t.value.toFixed(1)}
+              </text>
+            </>
+          ))}
+
+          {xLabelIdx.map((i) => (
+            <text
+              x={xAt(i)}
+              y={padding.top + plotH + 30}
+              text-anchor="middle"
+              class="axis-label"
+            >
+              {labels[i]}
+            </text>
+          ))}
+
+          {pathD && <path d={pathD} class="line" fill="none" />}
+
+          {points.map(([x, y], i) => (
+            <g>
+              <circle cx={x} cy={y} r="4.6" class="dot" />
+              <title>{`${labels[i]}: ${safeData[i].handicap.toFixed(1)}`}</title>
+            </g>
+          ))}
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* SVG-specific styles that can't be done with Tailwind */
+  .plot-bg {
+    fill: rgba(255, 255, 255, 0.06);
+    stroke: rgba(255, 255, 255, 0.10);
+    stroke-width: 1;
+  }
+
+  .grid-line {
+    stroke: rgba(255, 255, 255, 0.12);
+    stroke-width: 1;
+  }
+
+  .axis-label {
+    fill: rgba(255, 255, 255, 0.70);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .line {
+    stroke: rgba(255, 255, 255, 0.92);
+    stroke-width: 2.4;
+    opacity: 0.9;
+  }
+
+  .dot {
+    fill: rgba(255, 255, 255, 0.95);
+    opacity: 0.9;
+  }
+
+  /* Golf ball animation */
+  .golf-ball {
+    animation: bounce 1.2s ease-in-out infinite;
+    transform-origin: 60px 60px;
+  }
+
+  .shadow {
+    animation: shadowPulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-12px) scale(0.98, 1.02); }
+  }
+
+  @keyframes shadowPulse {
+    0%, 100% { opacity: 0.15; transform: scale(1); }
+    50% { opacity: 0.25; transform: scale(0.85); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .golf-ball, .shadow { animation: none !important; }
+  }
+</style>

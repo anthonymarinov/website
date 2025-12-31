@@ -1,0 +1,29 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  date: string;
+  href: string;
+  image: string;
+}
+
+const { title, description, date, href, image } = Astro.props;
+---
+
+<a 
+    href={href}
+    class="flex flex-col md:flex-row gap-4 group py-4 first:pt-0"
+>
+    <div class="flex-shrink-0 w-full md:w-48 h-32 overflow-hidden rounded-lg">
+        <img 
+            src={image} 
+            alt={title}
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+    </div>
+    <div class="flex-1">
+        <h3 class="font-semibold text-lg group-hover:underline">{title}</h3>
+        <p class="text-neutral-600 mt-1 line-clamp-2">{description}</p>
+        <span class="text-sm text-neutral-500 mt-2 block">{date}</span>
+    </div>
+</a>
