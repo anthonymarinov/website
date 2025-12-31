@@ -1,0 +1,29 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ArticlePreview from "../../components/ArticlePreview.astro";
+
+const articles = Object.values(import.meta.glob('./*.md', { eager: true }));
+---
+
+<Layout>
+    <main class="mt-6 md:mt-0 flex flex-col max-w-4xl mx-auto px-4">
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Articles</h1>
+            <p class="text-lg text-neutral-600">
+                Thoughts on engineering, software, and finance.
+            </p>
+        </header>
+
+        <div class="divide-y divide-neutral-200">
+            {articles.map((article: any) => (
+                <ArticlePreview 
+                    title={article.frontmatter.title}
+                    description={article.frontmatter.description}
+                    date={article.frontmatter.pubDate}
+                    href={article.url}
+                    image={article.frontmatter.image?.url || '/placeholder.jpg'}
+                />
+            ))}
+        </div>
+    </main>
+</Layout>

@@ -6,6 +6,14 @@
   --font-geist: Geist, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+@theme {
+  --color-cream-1: #F7F6D8;
+  --color-cream-2: #F7F7EC;
+  --color-cream-3: #F1EAD6;
+  --color-cream-4: #E8DDC8;
+  --color-cream-5: #D2C6AD;
+  --color-cream-6: #BFAE90;
+}
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -31,4 +39,23 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-12px) rotate(-1deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

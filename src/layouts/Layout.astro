@@ -1,8 +1,10 @@
 ---
-
+import NavigationBar from "../components/NavigationBar.astro"
+import Footer from "../components/Footer.astro"
+import "../styles/globals.css"
 ---
 
-<html lang="en" class="text-black bg-white dark:text-white dark:bg-[#111010]">
+<html lang="en" class="text-black bg-cream-2">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -17,14 +19,14 @@
     <title>Anthony Marinov</title>
     <meta
       name="description"
-      content="Studying Structural Engineering and CS at the University of California, San Diego. Previously at MiTek."
+      content="Structural Engineering, Computer Science at UCSD. Previously at Amazon."
     />
     <meta name="author" content="Anthony Marinov" />
     <meta name="canonical" content="https://www.anthonymarinov.com" />
     <meta name="og:title" content="Anthony Marinov" />
     <meta
       name="og:description"
-      content="Studying Structural Engineering and CS at the University of California, San Diego. Previously at MiTek."
+      content="Structural Engineering, Computer Science at UCSD. Previously at Amazon."
     />
     <meta name="og:url" content="https://www.anthonymarinov.com" />
     <meta name="og:site_name" content="Anthony Marinov" />
@@ -32,9 +34,13 @@
     <meta name="darkreader-lock" />
   </head>
 
-  <body
-    class="antialiased max-w-2xl mb-40 flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto font-geist"
-  >
-    <slot />
+  <body class="antialiased max-w-7xl flex flex-col md:flex-row mx-4 mt-8 lg:mx-auto font-geist bg-cream-2 min-h-screen overflow-x-hidden">
+    <div class="flex-auto min-w-0 flex flex-col px-2 md:px-0">
+      <NavigationBar />
+      <main class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

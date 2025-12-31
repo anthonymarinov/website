@@ -1,0 +1,129 @@
+---
+const navLinks = [
+  { href: "/#articles", text: "Articles" },
+  { href: "/#experiences", text: "Experiences" },
+  { href: "/#resources", text: "Resources" },
+  { href: "/#golf", text: "Golf" },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-20 bg-cream-2 py-6">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-0">
+    <a href="/" class="text-lg font-bold tracking-tighter hover:opacity-80 relative w-40 h-6 flex items-center">
+      <span id="logo-full" class="transition-all duration-500 ease-out absolute left-0 top-1/2 -translate-y-1/2">Anthony Marinov</span>
+      <span id="logo-short" class="transition-all duration-300 ease-out absolute left-0 top-1/2 -translate-y-1/2 opacity-0">AM</span>
+    </a>
+    
+    <!-- Desktop Navigation -->
+    <ul class="hidden md:flex space-x-5">
+      {navLinks.map(({ href, text }) => (
+        <li>
+          <a 
+            href={href} 
+            class="text-neutral-600 hover:text-black transition-colors"
+          >
+            {text}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Hamburger Button (Mobile) -->
+    <button 
+      id="menu-toggle" 
+      class="md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 group"
+      aria-label="Toggle menu"
+    >
+      <span class="block w-6 h-0.5 bg-neutral-600 group-hover:bg-black transition-colors"></span>
+      <span class="block w-6 h-0.5 bg-neutral-600 group-hover:bg-black transition-colors"></span>
+      <span class="block w-6 h-0.5 bg-neutral-600 group-hover:bg-black transition-colors"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Fullscreen Mobile Menu -->
+<div id="mobile-menu" class="fixed inset-0 z-30 bg-cream-2 flex-col hidden -translate-y-full transition-transform duration-400 ease-out">
+  <div class="flex items-center justify-between py-5 px-4">
+    <a href="/" class="text-lg font-bold tracking-tighter">
+      Anthony Marinov
+    </a>
+    <button id="menu-close" class="w-8 h-8 flex items-center justify-center text-neutral-600 hover:text-black transition-colors" aria-label="Close menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <ul class="flex flex-col items-center justify-center flex-1 space-y-8 mx-4">
+    {navLinks.map(({ href, text }) => (
+      <li>
+        <a 
+          href={href} 
+          class="text-3xl font-medium text-neutral-600 hover:text-black transition-colors"
+        >
+          {text}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<div class="h-[76px]"></div>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuClose = document.getElementById('menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const logoFull = document.getElementById('logo-full');
+  const logoShort = document.getElementById('logo-short');
+
+  // Scroll-based logo animation
+  let lastScrollY = 0;
+  const scrollThreshold = 50;
+
+  const updateLogo = () => {
+    const scrollY = window.scrollY;
+    
+    if (scrollY > scrollThreshold) {
+      logoFull?.classList.add('opacity-0');
+      logoFull?.classList.remove('opacity-100');
+      logoShort?.classList.remove('opacity-0');
+      logoShort?.classList.add('opacity-100');
+    } else {
+      logoFull?.classList.remove('opacity-0');
+      logoFull?.classList.add('opacity-100');
+      logoShort?.classList.add('opacity-0');
+      logoShort?.classList.remove('opacity-100');
+    }
+    
+    lastScrollY = scrollY;
+  };
+
+  window.addEventListener('scroll', updateLogo, { passive: true });
+  updateLogo(); // Initial check
+
+  menuToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('hidden');
+    mobileMenu?.classList.add('flex');
+    // Trigger reflow to ensure transition plays
+    mobileMenu?.offsetHeight;
+    mobileMenu?.classList.remove('-translate-y-full');
+    document.body.style.overflow = 'hidden';
+  });
+
+  const closeMenu = () => {
+    mobileMenu?.classList.add('-translate-y-full');
+    document.body.style.overflow = '';
+    // Wait for animation to finish before hiding
+    setTimeout(() => {
+      mobileMenu?.classList.add('hidden');
+      mobileMenu?.classList.remove('flex');
+    }, 300);
+  };
+
+  menuClose?.addEventListener('click', closeMenu);
+
+  // Close menu when clicking a link
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+</script>
