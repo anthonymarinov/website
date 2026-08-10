@@ -24,7 +24,7 @@ test.describe("Homepage", () => {
     
     // Experiences section
     await expect(page.locator('h2:has-text("Experiences")')).toBeVisible();
-    await expect(page.locator('text=Graduate Student Researcher')).toBeVisible();
+    await expect(page.locator('text=HPC Researcher')).toBeVisible();
     
     // Resources section
     await expect(page.locator('h2:has-text("Resources")')).toBeVisible();
