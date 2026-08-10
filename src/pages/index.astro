@@ -6,12 +6,21 @@ import ArticlePreview from "../components/ArticlePreview.astro";
 
 const experiences = [
   {
-    role: "Graduate Student Researcher",
+    role: "Software Development Engineer",
+    team: "Amazon Leo",
+    teamHref: "https://leo.amazon.com/",
+    company: "Amazon",
+    date: "June 2026 - Present",
+    description: "Working on satellite systems.",
+    logo: "/logos/amazon.png",
+  },
+  {
+    role: "HPC Researcher",
     team: "SHAPE Project",
     teamHref: "https://shape.ucsd.edu",
     company: "San Diego Supercomputer Center at UC San Diego",
     companyHref: "https://www.sdsc.edu",
-    date: "Sept 2025 - Present",
+    date: "Sept 2025 - June 2026",
     description: "Developing high-performance computing solutions for the design of impact-resistant metamaterials.",
     logo: "/logos/sdsc.png",
   },
@@ -86,7 +95,8 @@ const golfHandicapData = [
   { date: "2025-12-29", handicap: 30.6 },
   { date: "2026-01-31", handicap: 30.5 },
   { date: "2026-02-09", handicap: 30.5 },
-  { date: "2026-04-20", handicap: 30.0 }
+  { date: "2026-04-20", handicap: 30.0 },
+  { date: "2026-06-16", handicap: 29.4 }
 ];
 const currentHandicap = golfHandicapData.at(-1)?.handicap ?? null;
 
@@ -105,7 +115,7 @@ const handicapValues = golfHandicapData.map(({ handicap }) => handicap);
                     Engineer, <span class="underline">researcher</span>, developer.
                 </h1>
                 <p class="text-lg text-neutral-400">
-                    Structural engineer and software developer passionate about applying advanced tech. Currently combining high-performance computing with proprietary simulation software to design impact-resistant metamaterials.
+                    Structural engineer and software developer passionate about applying advanced tech. Currently working on satellite systems.
                 </p>
             </div>
             <div class="flex-shrink-0 self-start md:self-auto animate-float pt-4 md:pt-0">
